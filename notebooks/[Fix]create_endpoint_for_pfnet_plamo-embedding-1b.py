@@ -2,7 +2,7 @@
 # MAGIC %md
 # MAGIC # Databricks上のMLFlowで`/plamo-embedding-1b`モデルを管理する
 # MAGIC
-# MAGIC この例では、[pfnet/plamo-embedding-1b](https://huggingface.co/pfnet/plamo-embedding-1b)を `sentence_transformers` フレーバーで MLFLow にロギングし、Unity Catalog でモデルを管理し、モデルサービングエンドポイントを作成する方法を示します。
+# MAGIC この例では、[pfnet/plamo-embedding-1b](https://huggingface.co/pfnet/plamo-embedding-1b)を  MLFLow にロギングし、Unity Catalog でモデルを管理し、モデルサービングエンドポイントを作成する方法を示します。
 # MAGIC
 # MAGIC このノートブックの環境
 # MAGIC - ランタイム: 16.3 ML Runtime
@@ -13,15 +13,6 @@
 
 # MAGIC %md
 # MAGIC ## モデルをMLFlowに記録する
-
-# COMMAND ----------
-
-# MAGIC %pip install fugashi unidic_lite transformers_modules
-
-# COMMAND ----------
-
-# MAGIC %pip install databricks-vectorsearch
-# MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
 
@@ -65,22 +56,9 @@ print(similarities)
 # COMMAND ----------
 
 # カタログ、スキーマ、モデル名の定義
-my_uc_catalog = "users"
-my_uc_schema = "kohei_arai"
-
-# カタログ、スキーマ、モデル名の定義
-model_uc_catalog = "kohei_arai"
-model_uc_schema = "models"
+model_uc_catalog = "kohei_arai" #TODO: Change
+model_uc_schema = "demo"
 uc_model_name = "plamo_embedding_1b"
-
-# Vector Searchの設定
-VECTOR_SEARCH_ENDPOINT_NAME = "one-env-shared-endpoint-1"
-
-#インデックスの元となるテーブル
-source_table_fullname = f"amazon_reviews_multi_ja_silver"
-
-# サービングエンドポイントの名前を指定
-endpoint_name = 'karai-plamo-embedding'
 
 # COMMAND ----------
 
@@ -129,7 +107,7 @@ from mlflow import MlflowClient
 # Define the registered model name and alias
 registered_name = "kohei_arai.models.plamo_embedding_1b"
 alias = "latest_alias"
-version = 12
+version = 1
 
 # Set the alias for the desired model version (e.g., version 1)
 client = MlflowClient()
@@ -163,7 +141,7 @@ from mlflow import MlflowClient
 # Define the registered model name and alias
 registered_name = f"{model_uc_catalog}.{model_uc_schema}.{uc_model_name}"
 alias = "latest_alias"
-version = 12
+version = 1
 
 # Set the alias for the desired model version (e.g., version 1)
 client = MlflowClient()
